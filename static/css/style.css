@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+.block {
+  width: 956px;
+  margin: 0 auto;
+}
+.btn {
+  margin-right: 15px;
+}
+.nav {
+  margin-bottom: 110px;
+}
+.footer {
+  background: #f8f9fa;
+  padding-top: 30px;
+  padding-bottom: 10px;
+}
+.zag {
+  font-size: 24px;
+  padding-bottom: 10px;
+}
+html,
+body {
+  height: 100%;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.content {
+  flex: 1 0 auto;
+}
+.footer {
+  flex: 0 0 auto;
+}
+td.assessments{
+  font-size: 22px;
+  
+}
+.five, .four, .three, .two, .one, .zero{
+  font-weight: bold;
+}
+.five{
+  color: rgb(12, 216, 5);
+}
+.four{
+  color: rgb(241, 238, 4);
+}
+.three{
+  color: rgb(250, 192, 0);
+}
+.two{
+  color: rgb(250, 112, 0);
+}
+.one{
+  color: rgb(252, 50, 0);
+}
+.zero{
+  color: rgb(255, 0, 0);
+}

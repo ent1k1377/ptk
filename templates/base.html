@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/reset.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="icon" href="/static/img/favicon.ico">
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="content">
+    {% if current_user.is_authenticated %}
+    {%if current_user.position == 0%}
+    <!--Студент-->
+    <div class="nav">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+      <div class="block navbar">
+      <a class="navbar-brand" href="#">Политехнический колледж</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Поступление</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/assessments">Оценки</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/developments">События</a>
+          </li>
+        </ul>
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">        
+          <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ current_user.name }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+              <a class="dropdown-item" href="#">Настройки</a>
+              <a class="dropdown-item" href="/logout">Выход</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </nav>
+  </div>
+  <div class="block">{% block assessments %}{% endblock %}
+    {% block developments %}{% endblock %}
+  </div>
+  <!--Конец Студент-->
+    {%elif current_user.position == 1%}
+    <!--Конец Преподаватель-->
+    <div class="nav">
+      <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+        <div class="block navbar">
+        <a class="navbar-brand" href="#">Политехнический колледж</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Поступление</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/posts">Посты</a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="/assessments_teacher">Оценки</a>
+            </li>
+          </ul>
+          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">        
+            <div class="btn-group" role="group">
+              <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ current_user.name }}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item" href="#">Настройки</a>
+                <a class="dropdown-item" href="/logout">Выход</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </nav>
+    </div>
+    <div class="block">{% block posts %}{% endblock %}{% block assessments_teacher %}{% endblock %}</div>
+    <!--Конец Преподаватель-->
+    {%elif current_user.position == 2%}
+    <!--Админ-->
+    <!--Конец Админ-->
+    {% endif %}
+    {% else %}
+    <!--Пользователь без аккаунта-->
+      <div class="nav">
+      <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+        <div class="block navbar">
+        <a class="navbar-brand" href="/">Политехнический колледж</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Поступление</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Помощь</a>
+            </li>
+          </ul>
+          <a class="btn btn-primary" href="/login" role="button">Войти</a>
+          <a class="btn btn-primary" href="/register" role="button">Регистрация</a>
+        </div>
+      </div>
+      </nav>
+    </div>
+      <div class="block">
+      {% block login %}{% endblock %}
+      {% block reg %}{% endblock %}
+    </div>
+    {% endif %}
+    <!--КОНЕЦ пользователь без аккаунта-->
+    <div class="block">
+    {% for item in post%}
+    <div class="card mb-3" style="margin-top: 40px;">
+      <img src="/static/img/{{item.pathPict}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{item.headline}}</h5>
+        <p class="card-text">{{item.text}}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+      </div>
+  <div class="footer">
+    <div class="container block">
+      <div class="row">
+        <div class="col-3">
+          <div class="zag">Информация</div>
+          <ul>
+            <li><a href="">Главняя</a></li>
+            <li><a href="">Поступление</a></li>
+            <li><a href="">Помощь</a></li>
+          </ul>
+        </div>
+        <div class="col-4">
+          <div class="zag">Контактная Информация</div>
+          <ul>
+            <li>Великий Новгород</li>
+            <li>ул. Большая Санкт-Петербургская, д. 41.</li>
+            <li>Приёмная комиссия: +7 8162 33-20-44</li>
+            <li>Приёмная ректора: +7 8162 62-72-44</li>
+            <li>Факс: +7 8162 97-45-26</li>
+            <li><img src="http://qrcoder.ru/code/?http%3A%2F%2Fpolycol.ru%2F&4&0" width="132" height="132" border="0" title="QR код"></li>
+          </ul>
+        </div>
+        <div class="col-5">
+          <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A16307e6044a39a0fba16008817a1d409401b46aa70b783fd8e6b752acb588699&amp;source=constructor" width="360" height="322" frameborder="0"></iframe></div>
+    </div></div>
+  </div>
+</div>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

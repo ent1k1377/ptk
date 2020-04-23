@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block developments %}
+<div class="block">
+    {% for item in s%}
+    <div class="card mb-3" style="margin-top: 40px;">
+      <img src="/static/img/{{item.pathPict}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{item.headline}}</h5>
+        <p class="card-text">{{item.text}}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}

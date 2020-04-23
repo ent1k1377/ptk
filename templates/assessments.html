@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block assessments %}
+
+
+<table class="table">
+  <h1 style="text-align: center;">Оценки</h1>
+  <br>
+  <tbody>
+    
+      {% for item in slov %}
+      <tr>
+      <td scope="row" class="assessments" >{{item}}</td>
+      {% for i in slov[item] %}
+      {% if i == 5 %}
+      <td class="five">{{i}}</td>
+      {% elif i == 4 %}
+      <td class="four">{{i}}</td>
+      {% elif i == 3 %}
+      <td class="three">{{i}}</td>
+      {% elif i == 2 %}
+      <td class="two">{{i}}</td>
+      {% elif i == 1 %}
+      <td class="one">{{i}}</td>
+      {%else%}
+      <td class="zero">{{i}}</td>
+      {%endif%}
+      {% endfor %}
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

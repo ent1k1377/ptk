@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block assessments_teacher %}
+<h1>Оценки</h1>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.id_user.label }}<br>
+        {{ form.id_user(class="form-control") }}<br>
+        {% for error in form.id_user.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.assessment.label }}<br>
+        {{ form.assessment(class="form-control") }}<br>
+        {% for error in form.assessment.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.subject.label }}<br>
+        {{ form.subject(class="form-control") }}<br>
+        {% for error in form.subject.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    <div>{{ message }}</div>
+</form>
+{% endblock %}
