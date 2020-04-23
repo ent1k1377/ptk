@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block teachers %}
+    <h1>Авторизация</h1>
+    <h4>Предметы и id</h4>
+    {% for item in s %}
+    {% if loop.last %}
+    {{item.subject}}-{{item.id}}.
+    {% else %}
+    {{item.subject}}-{{item.id}},
+    {%endif%}
+    {% endfor %}
+    <br>
+    <br>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.id_users.label }}<br>
+            {{ form.id_users(class="form-control") }}<br>
+            {% for error in form.id_users.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.subjects.label }}<br>
+            {{ form.subjects(class="form-control") }}<br>
+            {% for error in form.subjects.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <div>{{ message }}</div>
+    </form>
+{% endblock %}

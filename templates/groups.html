@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block groups %}
+<h1>Добавление групп</h1>
+<h4>Предметы и id</h4>
+{% for item in s %}
+{% if loop.last %}
+{{item.subject}}-{{item.id}}.
+{% else %}
+{{item.subject}}-{{item.id}},
+{%endif%}
+{% endfor %}
+<br>
+<br>
+<h4>Существующие группы:</h4>
+{% for item in g %}
+{% if loop.last %}
+{{item.group}}.
+{% else %}
+{{item.group}},
+{%endif%}
+{% endfor %}
+<br>
+<br>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+    <p>
+        {{ form.group.label }}<br>
+        {{ form.group(class="form-control") }}<br>
+        {% for error in form.group.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.subject.label }}<br>
+        {{ form.subject(class="form-control") }}<br>
+        {% for error in form.subject.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <br>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <div>{{ message }}</div>
+</form>
+{% endblock %}

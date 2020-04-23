@@ -63,7 +63,7 @@
   </div>
   <!--Конец Студент-->
     {%elif current_user.position == 1%}
-    <!--Конец Преподаватель-->
+    <!--Преподаватель-->
     <div class="nav">
       <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
         <div class="block navbar">
@@ -107,6 +107,50 @@
     <!--Конец Преподаватель-->
     {%elif current_user.position == 2%}
     <!--Админ-->
+    
+    
+    <div class="nav">
+      <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+        <div class="block navbar">
+        <a class="navbar-brand" href="#">Политехнический колледж</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/subject">Предметы</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/groups">Группы</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Пользователи</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/teachers">Преподаватели</a>
+            </li>
+          </ul>
+          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">        
+            <div class="btn-group" role="group">
+              <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ current_user.name }}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item" href="#">Настройки</a>
+                <a class="dropdown-item" href="/logout">Выход</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </nav>
+    </div>
+    <div class="block">{% block teachers %}{% endblock %}{% block reg %}{% endblock %}{% block subject %}{% endblock %}{% block groups %}{% endblock %}</div>
     <!--Конец Админ-->
     {% endif %}
     {% else %}
@@ -121,7 +165,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Поступление</a>
@@ -131,14 +175,12 @@
             </li>
           </ul>
           <a class="btn btn-primary" href="/login" role="button">Войти</a>
-          <a class="btn btn-primary" href="/register" role="button">Регистрация</a>
         </div>
       </div>
       </nav>
     </div>
       <div class="block">
       {% block login %}{% endblock %}
-      {% block reg %}{% endblock %}
     </div>
     {% endif %}
     <!--КОНЕЦ пользователь без аккаунта-->

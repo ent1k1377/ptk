@@ -37,14 +37,22 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-    email = EmailField('Login / email', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password_again = PasswordField('Repeat password', validators=[DataRequired()])
-    surname = StringField('Surname', validators=[DataRequired()])
-    name = StringField('Name', validators=[DataRequired()])
-    patronymic = StringField('Patronymic', validators=[DataRequired()])
-    position = RadioField('Label', coerce=int, choices=[(0, 'Студент'), (1, 'Преподаватель')])
-    submit = SubmitField('Submit')
+    conn = sqlite3.connect("db/ptk.db")
+    cursor = conn.cursor()
+    s = [('', '')]
+    result = cursor.execute('''SELECT g."group" FROM groups as g''').fetchall()
+    for i in result:
+        s.append((i[0], i[0]))
+    conn.close()
+    email = EmailField('Логин / email', validators=[DataRequired()])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
+    surname = StringField('Фамилия', validators=[DataRequired()])
+    name = StringField('Имя', validators=[DataRequired()])
+    patronymic = StringField('Отчество', validators=[DataRequired()])
+    group = SelectField('Группы', choices=s)
+    position = RadioField('Роль', coerce=int, choices=[(0, 'Студент'), (1, 'Преподаватель')])
+    submit = SubmitField('Применить')
 
 
 class PostForm(FlaskForm):
@@ -70,6 +78,33 @@ class AssessmentsForm(FlaskForm):
     submit = SubmitField('Применить')
 
 
+class SubjectForm(FlaskForm):
+    subject = StringField('Предмет', validators=[DataRequired()])
+    submit = SubmitField('Применить')
+
+
+class GroupFrom(FlaskForm):
+    group = StringField('Группа', validators=[DataRequired()])
+    subject = StringField('Список предметов', validators=[DataRequired()])
+    submit = SubmitField('Применить')
+
+
+class TeacherFrom(FlaskForm):
+    conn = sqlite3.connect("db/ptk.db")
+    cursor = conn.cursor()
+    s = []
+    result = cursor.execute('''SELECT * FROM users
+                                WHERE "position" == 1''').fetchall()
+    for i in result:
+        print(i)
+        s.append((str(i[0]), ' '.join([str(i[1]), str(i[2]), str(i[3])])))
+    print(s)
+    conn.close()
+    id_users = SelectField('Преподаватели', choices=s)
+    subjects = StringField('Список предметов', validators=[DataRequired()])
+    submit = SubmitField('Применить')
+
+
 def main():
     db_session.global_init("db/ptk.db")
     app.run()
@@ -86,12 +121,7 @@ def index():
             s.append(i.Group.subject)
         s = list(map(int, s[0].split(',')))
         sub = session.query(numberSubject).filter(numberSubject.id.in_(s))
-    elif current_user.is_authenticated and current_user.position == 1:
-        s = []
-        for i in session.query(Teacher).filter(current_user.id == Teacher.id_users):
-            s.append(i.subjects)
-        s = list(map(int, s[0].split(',')))
-        sub = session.query(numberSubject).filter(numberSubject.id.in_(s))
+
     posts = session.query(Post).filter(Post.position == 0)
     return render_template("base.html", sub=sub, post=posts)
 
@@ -142,12 +172,13 @@ def reqister():
             surname=form.surname.data,
             patronymic=form.patronymic.data,
             email=form.email.data,
-            position=form.position.data
+            position=form.position.data,
+            group=form.group.data
         )
         user.set_password(form.password.data)
         session.add(user)
         session.commit()
-        return redirect('/login')
+        return redirect('/register')
     return render_template('register.html', title='Регистрация', form=form)
 
 
@@ -238,8 +269,7 @@ def vk_send(n, headline, text):
         for item in result:
             vk.messages.send(user_id=item.id_dialog,
                              message=f"""{headline}
-{text}""",
-                             random_id=random.randint(0, 2 ** 64))
+{text}""", random_id=random.randint(0, 2 ** 64))
 
 
 @app.route('/developments')
@@ -259,6 +289,61 @@ def developments():
     s = session.query(Post).filter(Post.position.in_((1, n_group)))
     print(sub)
     return render_template('developments.html', s=s, sub=sub)
+
+
+@app.route('/subject', methods=['GET', 'POST'])
+def subjects():
+    if current_user.is_authenticated and current_user.position == 2:
+        form = SubjectForm()
+        session = db_session.create_session()
+        s = session.query(numberSubject)
+        if form.validate_on_submit():
+            session = db_session.create_session()
+            post = numberSubject()
+            post.subject = form.subject.data
+            session.add(post)
+            session.merge(current_user)
+            session.commit()
+            return redirect('/subject')
+        return render_template('subject.html', form=form, s=s)
+
+
+@app.route('/groups', methods=['GET', 'POST'])
+def groups():
+    if current_user.is_authenticated and current_user.position == 2:
+        form = GroupFrom()
+        session = db_session.create_session()
+        s = session.query(numberSubject)
+        g = session.query(Group)
+        if form.validate_on_submit():
+            session = db_session.create_session()
+            post = Group()
+            post.group = form.group.data
+            post.subject = form.subject.data
+            session.add(post)
+            session.merge(current_user)
+            session.commit()
+            return redirect('/groups')
+        return render_template('groups.html', form=form, s=s, g=g)
+
+
+@app.route('/teachers', methods=['GET', 'POST'])
+def teachers():
+    if current_user.is_authenticated and current_user.position == 2:
+        form = TeacherFrom()
+        session = db_session.create_session()
+        s = session.query(numberSubject)
+        g = session.query(Group)
+        if form.validate_on_submit():
+            session = db_session.create_session()
+            post = Teacher()
+            post.id_users = form.id_users.data
+            post.subjects = form.subjects.data
+            session.add(post)
+            session.merge(current_user)
+            session.commit()
+            return redirect('/teachers')
+        return render_template('teachers.html', form=form, s=s, g=g)
 
 
 if __name__ == '__main__':

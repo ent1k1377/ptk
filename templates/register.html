@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block reg %}
-<h1>Регистрация</h1>
+<h1>Регистрация пользователей</h1>
 <form action="" method="post">
     {{ form.hidden_tag() }}
     {{ form.csrf_token }}
@@ -61,7 +61,16 @@
         {% endfor %}
     </p>
     <p>
-        {{ form.position.label }}<br>
+        {{ form.group.label }}<br>
+        {{ form.group(class="form-control") }}
+        {% for error in form.group.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.position.label }}
         {{ form.position }}<br>
         {% for error in form.position.errors %}
             <p class="alert alert-danger" role="alert">
@@ -71,5 +80,6 @@
     </p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}
+    <br>
 </form>
 {% endblock %}

@@ -2,6 +2,7 @@
 .block {
   width: 956px;
   margin: 0 auto;
+  padding: 0 16px;
 }
 .btn {
   margin-right: 15px;
